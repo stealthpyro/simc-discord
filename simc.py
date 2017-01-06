@@ -4,7 +4,7 @@ import asyncio
 import time
 import json
 
-os.chdir('/opt/simc-discord/')
+os.chdir('C:\\<location of folder>\\simc-discord-test')
 with open('user_data.json') as data_file:
     user_opt = json.load(data_file)
 
@@ -12,9 +12,7 @@ bot = discord.Client()
 threads = os.cpu_count()
 htmldir = user_opt['simcraft_opt'][0]['htmldir']
 website = user_opt['simcraft_opt'][0]['website']
-os.system('/usr/local/sbin/simc > ' + htmldir + 'debug/simc.ver 2>/dev/null')
-readversion = open(htmldir + 'debug/simc.ver', 'r')
-version = readversion.readlines()
+version = '1'
 
 async def sim(realm, char, scale, htmladdr, data, addon, region, iterations, loop, message):
     icon_num = 0
@@ -27,11 +25,11 @@ async def sim(realm, char, scale, htmladdr, data, addon, region, iterations, loo
             region, realm, char, scale, htmldir, char, htmladdr, threads, iterations)
 
     load = await bot.send_message(message.channel, 'Simulating: ' + load_icon[icon_num])
-    os.system('/usr/local/sbin/simc ' + options + ' > ' + htmldir + 'debug/simc.stout 2> ' + htmldir + 'debug/simc'
+    os.system('simc.exe ' + options + ' > ' + htmldir + 'debug\\simc.stout 2> ' + htmldir + 'debug\\simc'
                                                                                                        '.sterr &')
     while loop:
-        readstout = open(htmldir + 'debug/simc.stout', "r")
-        readsterr = open(htmldir + 'debug/simc.sterr', "r")
+        readstout = open(htmldir + 'debug\\simc.stout', "r")
+        readsterr = open(htmldir + 'debug\\simc.sterr', "r")
         process_check = readstout.readlines()
         err_check = readsterr.readlines()
         if len(err_check) > 1:
@@ -121,7 +119,7 @@ async def on_message(message):
                     if scaling == 'yes':
                         scale = 1
                     user = message.author
-                    os.makedirs(os.path.dirname(htmldir + 'sims/' + char + '/test.file'), exist_ok=True)
+                    os.makedirs(os.path.dirname(htmldir + 'sims\\' + char + '\\test.file'), exist_ok=True)
                     if data == 'addon':
                         await bot.change_presence(status=discord.Status.idle, game=discord.Game(name='Sim: Waiting...'))
                         msg = 'Please paste the output of your simulationcraft addon here and finish with DONE'
